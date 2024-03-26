@@ -45,7 +45,6 @@ class Table():
     # get all the values from the table
     def getall(self):
         cur = mysql.connection.cursor()
-        result = cur.execute("SELECT * FROM %s" % self.table)
         data = cur.fetchall()
         # print (data)
         return data
@@ -110,7 +109,6 @@ def isnewtable(tableName):
     cur = mysql.connection.cursor()
 
     try:  # attempt to get data from table
-        result = cur.execute("SELECT * from %s" % tableName)
         cur.close()
     except:
         return True
@@ -208,7 +206,7 @@ def function(dictionary):
     res = list(dictionary.values())
     print(res)
     cur = mysql.connection.cursor()
-    cur.execute(f"INSERT INTO PORT{PORT} (number, hash, previous, sender, recipient, amount, nonce) VALUES ('{res[0]}', '{res[1]}', '{res[2]}', '{res[3]}', '{res[4]}', '{res[5]}', '{res[6]}')")
+    cur.execute(f"INSERT INTO PORT{PORT} (number, hash, previous, sender, recipient, amount, nonce) VALUES (?, ?, ?, ?, ?, ?, ?)", (res[0], res[1], res[2], res[3], res[4], res[5], res[6], ))
     mysql.connection.commit()
     cur.close()
     return res
